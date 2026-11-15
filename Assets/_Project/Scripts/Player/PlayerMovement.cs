@@ -6,40 +6,56 @@ namespace SpaceExplorer.Player
     [RequireComponent(typeof(CharacterController))]
     public class PlayerMovement : MonoBehaviour
     {
-        [Header("Movement Settings")]
+        [Header("Movement & Jump Settings")]
         [SerializeField] private float moveSpeed = 5f;
         [SerializeField] private float rotationSpeed = 12f;
-        [SerializeField] private float gravity = -9.81f;
+        [SerializeField] private float jumpHeight = 1.2f;
+        [SerializeField] private float gravity = -15f;
 
-        [Header("Camera Alignment")]
-        [Tooltip("Reference to the CameraRig or Main Camera so movement aligns with what the player sees.")]
+        [Header("References")]
         [SerializeField] private Transform cameraTransform;
+        [SerializeField] private Animator characterAnimator;
 
         private CharacterController _controller;
         private Vector2 _externalMoveInput;
         private float _verticalVelocity;
+        private static readonly int SpeedHash = Animator.StringToHash("Speed");
 
         private void Awake()
         {
             _controller = GetComponent<CharacterController>();
+            if (characterAnimator == null)
+            {
+                characterAnimator = GetComponentInChildren<Animator>();
+            }
         }
 
         private void Update()
         {
             Vector2 input = GetCombinedInput();
+            HandleJumpInput();
             MoveCharacter(input);
         }
 
-        // Method to allows external systems to assign the reference transform cleanly.
-        public void SetCameraReference(Transform camTransform)
+        public void SetCameraReference(Transform camTransform) => cameraTransform = camTransform;
+
+        public void SetMoveInput(Vector2 moveInput) => _externalMoveInput = Vector2.ClampMagnitude(moveInput, 1f);
+
+        /// Method for the mobile UI Jump Button to trigger a jump.
+        public void TriggerJump()
         {
-            cameraTransform = camTransform;
+            if (_controller.isGrounded)
+            {
+                _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            }
         }
 
-        // Method for the future mobile Virtual Joystick to inject movement values.
-        public void SetMoveInput(Vector2 moveInput)
+        private void HandleJumpInput()
         {
-            _externalMoveInput = Vector2.ClampMagnitude(moveInput, 1f);
+            if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+            {
+                TriggerJump();
+            }
         }
 
         private Vector2 GetCombinedInput()
@@ -62,6 +78,7 @@ namespace SpaceExplorer.Player
             return _externalMoveInput.sqrMagnitude > 0.01f ? _externalMoveInput : keyboardInput;
         }
 
+        // Method to move the character
         private void MoveCharacter(Vector2 input)
         {
             Vector3 forward = Vector3.forward;
@@ -91,8 +108,16 @@ namespace SpaceExplorer.Player
             }
             _verticalVelocity += gravity * Time.deltaTime;
 
-            Vector3 finalVelocity = (moveDirection * moveSpeed) + (Vector3.up * _verticalVelocity);
+            Vector3 horizontalVelocity = moveDirection * moveSpeed;
+            Vector3 finalVelocity = horizontalVelocity + (Vector3.up * _verticalVelocity);
             _controller.Move(finalVelocity * Time.deltaTime);
+
+            // Feed movement speed to Animator 
+            if (characterAnimator != null && characterAnimator.runtimeAnimatorController != null)
+            {
+                float currentSpeed = new Vector3(_controller.velocity.x, 0f, _controller.velocity.z).magnitude;
+                characterAnimator.SetFloat(SpeedHash, currentSpeed, 0.1f, Time.deltaTime);
+            }
         }
     }
 }
