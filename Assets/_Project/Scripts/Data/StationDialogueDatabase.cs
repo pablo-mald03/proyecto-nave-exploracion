@@ -28,11 +28,11 @@ namespace NaveExploracion.Data
     public static readonly Dictionary<string, EducationalTopic> Entries = new Dictionary<string, EducationalTopic>
     {
             {
-                "CURIOSIDAD_HUELLAS",
+                "TOPIC_CONSOLE_OXYGEN",
                 new EducationalTopic(
-                    "HUELLAS ETERNAS EN LA LUNA",
-                    "En la Luna no existe viento, lluvia ni ríos que erosionen el suelo como en la Tierra.",
-                    "Por eso, las pisadas que dejaron los astronautas del Apolo seguirán intactas durante millones de años."
+                        "WHY DOES THE FLAG WAVE?",
+                    "Since there is no air on the Moon, the flag has a horizontal rod at the top to keep it stretched out.",
+                    "After decades under solar radiation with no atmosphere, its colors have likely faded completely white."
                 )
             },
             {
