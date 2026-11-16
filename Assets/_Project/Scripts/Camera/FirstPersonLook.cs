@@ -1,41 +1,28 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class FirstPersonLook : MonoBehaviour
 {
     public Transform playerCamera;
-    public float touchSensitivity = 0.25f;
+    public float joystickSensitivity = 120f;
 
-    float xRotation = 0f;
-    float yRotation = 0f;
+    private Vector2 lookInput;
+    private float xRotation = 0f;
+    private float yRotation = 0f;
 
     void Start()
     {
         yRotation = transform.eulerAngles.y;
     }
 
+    public void SetLookInput(Vector2 input)
+    {
+        lookInput = input;
+    }
+
     void LateUpdate()
     {
-        Vector2 lookDelta = Vector2.zero;
-
-        if (Touchscreen.current != null)
-        {
-            foreach (var touch in Touchscreen.current.touches)
-            {
-                if (touch.press.isPressed && touch.position.ReadValue().x > Screen.width * 0.5f)
-                {
-                    lookDelta = touch.delta.ReadValue() * touchSensitivity;
-                    break;
-                }
-            }
-        }
-        else if (Mouse.current != null && Mouse.current.leftButton.isPressed && Mouse.current.position.ReadValue().x > Screen.width * 0.5f)
-        {
-            lookDelta = Mouse.current.delta.ReadValue() * touchSensitivity;
-        }
-
-        yRotation += lookDelta.x;
-        xRotation -= lookDelta.y;
+        yRotation += lookInput.x * joystickSensitivity * Time.deltaTime;
+        xRotation -= lookInput.y * joystickSensitivity * Time.deltaTime;
         xRotation = Mathf.Clamp(xRotation, -75f, 75f);
 
         if (playerCamera != null)
