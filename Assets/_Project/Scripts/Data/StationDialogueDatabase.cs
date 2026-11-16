@@ -28,43 +28,83 @@ namespace NaveExploracion.Data
     public static readonly Dictionary<string, EducationalTopic> Entries = new Dictionary<string, EducationalTopic>
     {
             {
-                "INTRO_BIENVENIDA",
+                "CURIOSIDAD_HUELLAS",
                 new EducationalTopic(
-                    "BITÁCORA DE MISIÓN",
-                    "Bienvenido a la Base Lunar Artemisa. Acércate a las terminales iluminadas para analizar los sistemas de supervivencia.",
-                    "Usa el joystick izquierdo para desplazarte y el botón amarillo de acción cuando estés frente a una consola."
+                    "HUELLAS ETERNAS EN LA LUNA",
+                    "En la Luna no existe viento, lluvia ni ríos que erosionen el suelo como en la Tierra.",
+                    "Por eso, las pisadas que dejaron los astronautas del Apolo seguirán intactas durante millones de años."
                 )
             },
             {
-                "TOPIC_CONSOLE_OXYGEN",
+                "CURIOSIDAD_BANDERA",
                 new EducationalTopic(
-                    "GENERADOR DE OXÍGENO (ECLSS)",
-                    "En la Luna no existe atmósfera respirable. Esta unidad separa el oxígeno del agua mediante electrólisis.",
-                    "El hidrógeno residual se almacena como combustible auxiliar para los propulsores de maniobra."
+                    "¿POR QUÉ ONDEA LA BANDERA?",
+                    "Como en la Luna no hay aire, la bandera tiene un tubo horizontal arriba para mantenerse estirada.",
+                    "Tras décadas bajo la radiación solar sin atmósfera, sus colores probablemente ya se volvieron blancos."
                 )
             },
             {
-                "CONSOLE_GRAVEDAD",
+                "CURIOSIDAD_REGOLITO",
                 new EducationalTopic(
-                    "GRAVEDAD LUNAR (1.62 m/s²)",
-                    "La gravedad en la Luna equivale aproximadamente a una sexta parte (16.6%) de la gravedad terrestre.",
-                    "Por eso cada salto alcanza mayor altura y requiere menos impulso vertical que en la Tierra."
+                    "POLVO CON OLOR A PÓLVORA",
+                    "El suelo lunar, llamado regolito, está formado por rocas pulverizadas y afiladas como vidrio molido.",
+                    "Los astronautas contaron que al quitarse el casco dentro de la nave, el polvo lunar olía a pólvora quemada."
                 )
             },
             {
-                "CONSOLE_RADIACION",
+                "CURIOSIDAD_HIELO_POLAR",
                 new EducationalTopic(
-                    "ESCUDO CONTRA RADIACIÓN SOLAR",
-                    "Al carecer de campo magnético global y atmósfera densa, la superficie lunar recibe radiación cósmica directa.",
-                    "Los módulos habitables utilizan recubrimientos de regolito lunar compactado y polietileno de alta densidad."
+                    "HIELO OCULTO EN LOS POLOS",
+                    "En el fondo de los cráteres polares nunca entra la luz del Sol, conservando millones de toneladas de hielo.",
+                    "Este recurso servirá para obtener agua potable, oxígeno respirable y combustible para futuros cohetes."
                 )
             },
             {
-                "CONSOLE_ENERGIA",
+                "CURIOSIDAD_RECICLAJE_AGUA",
                 new EducationalTopic(
-                    "PANELES SOLARES Y BATERÍAS",
-                    "Un día lunar dura cerca de 29.5 días terrestres: 14 días de luz solar continua y 14 días de oscuridad total.",
-                    "Durante la noche lunar, la estación depende por completo de celdas de combustible y baterías térmicas."
+                    "RECICLAJE EXTREMO DE AGUA",
+                    "En el espacio no se desperdicia ni una gota: se recolecta el sudor, el vapor al respirar y hasta la orina.",
+                    "Tras pasar por filtros avanzados, se convierte en agua más limpia que la del grifo de tu casa."
+                )
+            },
+            {
+                "CURIOSIDAD_COMIDA_ESPACIAL",
+                new EducationalTopic(
+                    "TORTILLAS EN LUGAR DE PAN",
+                    "Sin gravedad, las migajas de pan flotan por toda la cabina y pueden dañar los equipos electrónicos.",
+                    "Por eso los astronautas prefieren usar tortillas, ya que no sueltan migas al comerlas en el espacio."
+                )
+            },
+            {
+                "CURIOSIDAD_TEMPERATURA",
+                new EducationalTopic(
+                    "CLIMA DE FUEGO Y HIELO",
+                    "Sin atmósfera que regule el calor, durante el día lunar el suelo alcanza los 120 °C, ¡suficiente para hervir agua!",
+                    "En cambio, durante la noche lunar la temperatura cae hasta los -130 °C de frío extremo."
+                )
+            },
+            {
+                "CURIOSIDAD_MAREAS",
+                new EducationalTopic(
+                    "EL SUPERPODER DE LAS MAREAS",
+                    "Aunque está a 384,000 km de distancia, la gravedad de la Luna jala el agua de nuestros océanos.",
+                    "Esa atracción invisible hace que el nivel del mar suba y baje dos veces al día en la Tierra."
+                )
+            },
+            {
+                "CURIOSIDAD_CARA_OCULTA",
+                new EducationalTopic(
+                    "SIEMPRE LA MISMA CARA",
+                    "La Luna tarda exactamente lo mismo en girar sobre sí misma que en dar una vuelta alrededor de la Tierra.",
+                    "Debido a esta sincronía perfecta, desde nuestro planeta siempre vemos el mismo lado lunar."
+                )
+            },
+            {
+                "CURIOSIDAD_CAIDA_LIBRE",
+                new EducationalTopic(
+                    "EL MARTILLO Y LA PLUMA",
+                    "En la Luna no hay resistencia del aire que frene los objetos ligeros cuando caen hacia el suelo.",
+                    "En el Apolo 15 comprobaron que un martillo y una pluma soltados a la vez tocan el suelo juntos."
                 )
             }
         };

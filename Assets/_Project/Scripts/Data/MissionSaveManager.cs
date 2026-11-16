@@ -11,6 +11,8 @@ namespace NaveExploracion.Data
         private const string KEY_ROT_Y = "SAVE_ROT_Y";
         private const string KEY_MISSIONS_COUNT = "SAVE_MISSIONS_COMPLETED";
 
+        private const string LAST_MISSION_SCENE_KEY = "LastMissionScene";
+
         public static bool HasSavedGame() => PlayerPrefs.GetInt(KEY_HAS_SAVE, 0) == 1;
 
         //Checkpoint saver method
@@ -81,6 +83,17 @@ namespace NaveExploracion.Data
         {
             PlayerPrefs.DeleteAll();
             PlayerPrefs.Save();
+        }
+
+        public static void SetLastMissionScene(string sceneName)
+        {
+            PlayerPrefs.SetString(LAST_MISSION_SCENE_KEY, sceneName);
+            PlayerPrefs.Save();
+        }
+
+        public static string GetLastMissionScene()
+        {
+            return PlayerPrefs.GetString(LAST_MISSION_SCENE_KEY, "Base_Scene");
         }
     }
 }

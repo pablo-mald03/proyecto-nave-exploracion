@@ -1,6 +1,9 @@
 using UnityEngine;
-using TMPro; 
+using TMPro;
 using UnityEngine.Events;
+using System.Collections;
+using UnityEngine.SceneManagement;
+using NaveExploracion.Data;
 
 public class RobotBatteryTimer : MonoBehaviour
 {
@@ -11,10 +14,10 @@ public class RobotBatteryTimer : MonoBehaviour
 
     [Header("UI")]
     public TextMeshProUGUI batteryText;
-    public GameObject gameOverPanel; 
+    public GameObject gameOverPanel;
 
     [Header("Block when counts make 0")]
-    public MonoBehaviour[] scriptsToDisable; 
+    public MonoBehaviour[] scriptsToDisable;
     public GameObject mobileControlsHUD;
 
     [Header("Extra event")]
@@ -60,6 +63,13 @@ public class RobotBatteryTimer : MonoBehaviour
         }
     }
 
+    private IEnumerator LoadGameOverRoutine()
+    {
+        yield return new WaitForSecondsRealtime(1.2f);
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("GameOver");
+    }
+
     private void TriggerBatteryDepleted()
     {
         foreach (var script in scriptsToDisable)
@@ -78,5 +88,22 @@ public class RobotBatteryTimer : MonoBehaviour
         }
 
         onBatteryEmpty?.Invoke();
+        MissionSaveManager.SetLastMissionScene(SceneManager.GetActiveScene().name);
+        StartCoroutine(LoadGameOverRoutine());
+    }
+
+
+    public void RetryMission()
+    {
+        Time.timeScale = 1f;
+        UnityEngine.SceneManagement.SceneManager.LoadScene(
+            UnityEngine.SceneManagement.SceneManager.GetActiveScene().name
+        );
+    }
+
+    public void ReturnToBaseWithoutCompleting()
+    {
+        Time.timeScale = 1f;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Base_Scene");
     }
 }

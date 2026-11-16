@@ -9,14 +9,15 @@ namespace NaveExploracion.UI
     {
         public static InteractButtonController Instance { get; private set; }
 
-        [Header("Visual Feedback")]
+        [Header("Visual Feedback (Brawl Stars Pulse)")]
         [SerializeField] private CanvasGroup buttonCanvasGroup;
         [SerializeField] private float inactiveAlpha = 0.35f;
         [SerializeField] private float pulseSpeed = 5f;
         [SerializeField] private float pulseScaleAmount = 0.12f;
 
         private Button _button;
-        private InteractableStationPoint _currentTarget;
+        private InteractableStationPoint _dialogueTarget;
+        private MissionStationPoint _missionTarget;
         private Vector3 _baseScale;
 
         private void Awake()
@@ -32,12 +33,13 @@ namespace NaveExploracion.UI
             _baseScale = transform.localScale;
             _button.onClick.AddListener(HandleInteractPressed);
 
-            SetTarget(null);
+            RefreshVisualState();
         }
 
         private void Update()
         {
-            if (_currentTarget == null)
+            bool hasAnyTarget = _dialogueTarget != null || _missionTarget != null;
+            if (!hasAnyTarget)
             {
                 transform.localScale = Vector3.Lerp(transform.localScale, _baseScale, Time.unscaledDeltaTime * 10f);
                 return;
@@ -49,29 +51,53 @@ namespace NaveExploracion.UI
 
         public void SetTarget(InteractableStationPoint target)
         {
-            _currentTarget = target;
-            bool hasTarget = _currentTarget != null;
-
-            _button.interactable = hasTarget;
-            if (buttonCanvasGroup != null)
-            {
-                buttonCanvasGroup.alpha = hasTarget ? 1f : inactiveAlpha;
-            }
+            _dialogueTarget = target;
+            if (target != null) _missionTarget = null;
+            RefreshVisualState();
         }
 
         public void ClearTargetIfMatches(InteractableStationPoint target)
         {
-            if (_currentTarget == target)
+            if (_dialogueTarget == target)
             {
-                SetTarget(null);
+                _dialogueTarget = null;
+                RefreshVisualState();
             }
+        }
+
+        public void SetMissionTarget(MissionStationPoint target)
+        {
+            _missionTarget = target;
+            if (target != null) _dialogueTarget = null;
+            RefreshVisualState();
+        }
+
+        public void ClearMissionTargetIfMatches(MissionStationPoint target)
+        {
+            if (_missionTarget == target)
+            {
+                _missionTarget = null;
+                RefreshVisualState();
+            }
+        }
+
+        private void RefreshVisualState()
+        {
+            bool hasTarget = _dialogueTarget != null || _missionTarget != null;
+            _button.interactable = hasTarget;
+            if (buttonCanvasGroup != null)
+                buttonCanvasGroup.alpha = hasTarget ? 1f : inactiveAlpha;
         }
 
         private void HandleInteractPressed()
         {
-            if (_currentTarget != null)
+            if (_missionTarget != null)
             {
-                _currentTarget.Interact();
+                _missionTarget.Interact();
+            }
+            else if (_dialogueTarget != null)
+            {
+                _dialogueTarget.Interact();
             }
         }
     }

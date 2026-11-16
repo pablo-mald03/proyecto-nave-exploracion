@@ -1,12 +1,19 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement; // Required for changing scenes later
+using UnityEngine.SceneManagement;
+using NaveExploracion.Data;
 
 public class CollectibleRock : MonoBehaviour
 {
+    [Header("Mission Save Hook")]
+    public string missionId = MissionDatabase.MISSION_01;
+    public string returnSceneName = "Base_Scene";
+    public float delayBeforeReturn = 2.5f;
+
     [Header("Settings")]
     public string playerTag = "Player";
-    public bool destroyOnCollect = true;
+    public bool hideOnCollect = true;
 
     [Header("Victory UI (Optional)")]
     [Tooltip("Drag a Canvas Panel or Text here if you want to display it on screen")]
@@ -24,7 +31,7 @@ public class CollectibleRock : MonoBehaviour
 
         isCollected = true;
 
-        Debug.Log("You win! You found the special rock.");
+        MissionSaveManager.MarkMissionCompleted(missionId);
 
         if (victoryMessageUI != null)
         {
@@ -33,14 +40,25 @@ public class CollectibleRock : MonoBehaviour
 
         onRockCollected?.Invoke();
 
-        if (destroyOnCollect)
+        if (hideOnCollect)
         {
-            Destroy(gameObject);
+            foreach (var r in GetComponentsInChildren<Renderer>()) r.enabled = false;
+            foreach (var c in GetComponentsInChildren<Collider>()) c.enabled = false;
         }
+
+        StartCoroutine(ReturnToBaseRoutine());
+    }
+
+    private IEnumerator ReturnToBaseRoutine()
+    {
+        yield return new WaitForSecondsRealtime(delayBeforeReturn);
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(returnSceneName);
     }
 
     public void LoadSceneByName(string sceneName)
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene(sceneName);
     }
 }
